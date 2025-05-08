@@ -5,7 +5,13 @@ import pickle
 import re
 import seaborn as sns
 import matplotlib.pyplot as plt
-from pycaret.classification import load_model, predict_model
+import os
+
+try:
+    from pycaret.classification import load_model, predict_model
+except ImportError:
+    st.error("Erro ao importar PyCaret. Por favor, verifique a instalação.")
+    st.stop()
 
 # Configurações iniciais do app
 st.set_page_config(page_title='Simulador - Case Ifood',
@@ -15,7 +21,17 @@ st.set_page_config(page_title='Simulador - Case Ifood',
 st.title('Simulador - Conversão de Vendas')
 
 # Load modelo treinado
-mdl_rf = load_model('./pickle/pickle_rf_pycaret2')
+try:
+    model_path = './pickle/pickle_rf_pycaret2'
+    if os.path.exists(model_path):
+        mdl_rf = load_model(model_path)
+        st.sidebar.success("Modelo carregado com sucesso!")
+    else:
+        st.sidebar.error(f"Modelo não encontrado em: {model_path}")
+        st.stop()
+except Exception as e:
+    st.sidebar.error(f"Erro ao carregar modelo: {str(e)}")
+    st.stop()
 
 # Sidebar com opção CSV ou Online
 st.sidebar.image('./images/logo_fiap.png', width=100)
