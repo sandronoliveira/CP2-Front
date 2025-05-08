@@ -7,11 +7,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import os
 
-try:
-    from pycaret.classification import load_model, predict_model
-except ImportError:
-    st.error("Erro ao importar PyCaret. Por favor, verifique a instalação.")
-    st.stop()
+from pycaret.classification import load_model, predict_model
+
 
 # Configurações iniciais do app
 st.set_page_config(page_title='Simulador - Case Ifood',
@@ -22,7 +19,7 @@ st.title('Simulador - Conversão de Vendas')
 
 # Load modelo treinado
 try:
-    model_path = './pickle/pickle_rf_pycaret2'
+    model_path = '/pickle/pickle_rf_pycaret2'
     if os.path.exists(model_path):
         mdl_rf = load_model(model_path)
         st.sidebar.success("Modelo carregado com sucesso!")
